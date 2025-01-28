@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wish Board</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert2@11"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body class="bg-light">
+    <div class="container text-center py-5">
+        <h2 class="display-4 text-primary">Leave Your Birthday Wish!</h2>
+        <p class="lead">Spread some love with a birthday message for my sister!</p>
+        
+        <form id="wishForm" data-aos="fade-up">
+            <div class="mb-4">
+                <textarea id="wishMessage" class="form-control" rows="4" placeholder="Write your wish here..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Wish</button>
+        </form>
+
+        <h3 class="mt-5 text-secondary">Birthday Wishes</h3>
+        <div id="wishList"></div>
+    </div>
+
+    <script>
+        const wishForm = document.getElementById('wishForm');
+        const wishList = document.getElementById('wishList');
+
+        wishForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const wishMessage = document.getElementById('wishMessage').value;
+            
+            if (wishMessage.trim()) {
+                const newWish = document.createElement('p');
+                newWish.textContent = wishMessage;
+                wishList.appendChild(newWish);
+                localStorage.setItem('wishes', wishList.innerHTML);
+
+                // SweetAlert for feedback
+                Swal.fire({
+                    title: 'Wish Submitted!',
+                    text: 'Your birthday wish has been added!',
+                    icon: 'success',
+                    confirmButtonText: 'Awesome!',
+                });
+            }
+        });
+
+        // Retrieve and display saved wishes from local storage
+        window.onload = function() {
+            const savedWishes = localStorage.getItem('wishes');
+            if (savedWishes) {
+                wishList.innerHTML = savedWishes;
+            }
+        };
+    </script>
+</body>
+</html>
